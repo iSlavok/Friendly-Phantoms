@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "friendly-phantoms",
+	"version": "${version}",
+	"name": "Friendly Phantoms",
+	"description": "This mod makes phantoms friendly!",
+	"authors": [
+		"isSLAVOK"
+	],
+	"contact": {
+		"sources": "https://github.com/iSlavok/Friendly-Phantoms"
+	},
+	"license": "MIT",
+	"icon": "assets/friendly-phantoms/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"online.slavok.FriendlyPhantoms"
+		]
+	},
+	"mixins": [
+		"friendly-phantoms.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.1",
+		"minecraft": "~1.21",
+		"java": ">=21"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
