@@ -13,6 +13,8 @@ data class Mc(
     val java: Int,
     val depends: String,
     val gameVersions: List<String>,
+    // Fabric API version for the gametest source set (null = no gametest on this anchor).
+    val fapi: String? = null,
 )
 
 val mcVersion = stonecutter.current.version
@@ -25,8 +27,9 @@ val mc = when (mcVersion) {
         listOf("1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4"))
     "1.20.6" -> Mc("1.20.6+build.3", "10.0.0", 21, ">=1.20.5 <1.21",
         listOf("1.20.5", "1.20.6"))
+    // Gametest uses the reworked Fabric GameTest API (v3), available on 1.21+.
     "1.21.8" -> Mc("1.21.8+build.1", "15.0.2", 21, ">=1.21 <1.22",
-        listOf("1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8"))
+        listOf("1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8"), "0.136.1+1.21.8")
     else -> error("Unconfigured Minecraft version: $mcVersion")
 }
 
@@ -50,6 +53,21 @@ dependencies {
 
     // ModMenu is an optional, client-only soft dependency (see fabric.mod.json "suggests").
     modImplementation("com.terraformersmc:modmenu:${mc.modmenu}")
+}
+
+// Server gametest (Minecraft 1.20+). Directly verifies the mixin: a spawned phantom
+// must not be able to target players. Executed in CI.
+mc.fapi?.let { fapiVersion ->
+    fabricApi {
+        configureTests {
+            createSourceSet = true
+            modId = "${property("archives_base_name")}-test"
+            eula = true
+        }
+    }
+    dependencies {
+        "modGametestImplementation"("net.fabricmc.fabric-api:fabric-api:$fapiVersion")
+    }
 }
 
 tasks.processResources {
