@@ -11,6 +11,6 @@ public class FriendlyPhantoms implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Hello Fabric world!");
+		LOGGER.info("Friendly Phantoms loaded — phantoms will no longer attack.");
 	}
 }

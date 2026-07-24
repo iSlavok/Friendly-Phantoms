@@ -16,6 +16,9 @@
 	"entrypoints": {
 		"main": [
 			"online.slavok.FriendlyPhantoms"
+		],
+		"modmenu": [
+			"online.slavok.client.FriendlyPhantomsModMenu"
 		]
 	},
 	"mixins": [
@@ -27,6 +30,6 @@
 		"java": ">=21"
 	},
 	"suggests": {
-		"another-mod": "*"
+		"modmenu": "*"
 	}
 }
