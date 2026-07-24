@@ -21,11 +21,13 @@ stonecutter {
         // Minecraft 26+ requires JDK 25 to build. Include it only when the running
         // JDK supports it, so the project still builds on JDK 21-24 (CI provisions
         // JDK 25 for the unobfuscated job).
-        val versions = mutableListOf("1.18.2", "1.19.4", "1.20.4", "1.20.6", "1.21.8")
+        // Yarn-mapped versions share the central build.gradle.kts.
+        versions("1.18.2", "1.19.4", "1.20.4", "1.20.6", "1.21.8")
+        // Minecraft 26+ is unobfuscated: different Loom plugin + no mappings, so it
+        // uses a dedicated build script. It needs JDK 25, so only register it there.
         if (JavaVersion.current().majorVersion.toInt() >= 25) {
-            versions.add("26.2")
+            version("26.2", "26.2").buildscript = "build.unobfuscated.gradle.kts"
         }
-        versions(*versions.toTypedArray())
         vcsVersion = "1.21.8"
     }
 }

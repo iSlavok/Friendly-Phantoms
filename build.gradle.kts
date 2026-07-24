@@ -8,8 +8,7 @@ plugins {
 // coordinates differ. Anchors are the newest patch of each "breakage boundary"
 // (Java level / rendering API), and each jar declares the Minecraft range it covers.
 data class Mc(
-    // null on unobfuscated versions (Minecraft 26+), which need no mappings.
-    val yarn: String?,
+    val yarn: String,
     val modmenu: String,
     val java: Int,
     val depends: String,
@@ -31,9 +30,6 @@ val mc = when (mcVersion) {
     // Gametest uses the reworked Fabric GameTest API (v3), available on 1.21+.
     "1.21.8" -> Mc("1.21.8+build.1", "15.0.2", 21, ">=1.21 <1.22",
         listOf("1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8"), "0.136.1+1.21.8")
-    // Minecraft 26+ is unobfuscated (Mojang names, no Yarn) and requires Java 25.
-    "26.2" -> Mc(null, "20.0.1", 25, ">=26.1 <27",
-        listOf("26.1", "26.2"))
     else -> error("Unconfigured Minecraft version: $mcVersion")
 }
 
@@ -52,8 +48,7 @@ repositories {
 
 dependencies {
     minecraft("com.mojang:minecraft:$mcVersion")
-    // Unobfuscated versions (26+) need no mappings.
-    mc.yarn?.let { mappings("net.fabricmc:yarn:$it:v2") }
+    mappings("net.fabricmc:yarn:${mc.yarn}:v2")
     modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
 
     // ModMenu is an optional, client-only soft dependency (see fabric.mod.json "suggests").
