@@ -1,3 +1,5 @@
+// Whole screen is DrawContext-based (Minecraft 1.20+). Excluded on older versions.
+//? if >=1.20 {
 package online.slavok.client;
 
 import net.minecraft.client.gui.DrawContext;
@@ -42,3 +44,4 @@ public class FriendlyPhantomsScreen extends Screen {
 		}
 	}
 }
+//?}
