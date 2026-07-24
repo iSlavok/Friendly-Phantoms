@@ -1,5 +1,5 @@
-// Whole screen is DrawContext-based (Minecraft 1.20+). Excluded on older versions.
-//? if >=1.20 {
+// Whole screen is Yarn DrawContext-based (Minecraft 1.20 – 1.21.x). Excluded elsewhere.
+//? if >=1.20 && <1.22 {
 package online.slavok.client;
 
 import net.minecraft.client.gui.DrawContext;

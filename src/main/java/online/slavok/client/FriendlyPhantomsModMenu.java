@@ -8,7 +8,7 @@ public class FriendlyPhantomsModMenu implements ModMenuApi {
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
 		// The info screen uses the DrawContext API (1.20+). On older versions the mod
 		// still appears in the ModMenu list, just without a custom screen.
-		//? if >=1.20 {
+		//? if >=1.20 && <1.22 {
 		return FriendlyPhantomsScreen::new;
 		//?} else {
 		/*return screen -> null;*/
