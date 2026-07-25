@@ -1,0 +1,45 @@
+# Publishes a release when a `v*` tag is pushed:
+#   1. builds every declared Minecraft version
+#   2. attaches all jars to a GitHub Release
+#   3. publishes each version to Modrinth (needs `modrinth_id` set in
+#      gradle.properties and the MODRINTH_TOKEN repository secret)
+name: release
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # JDK 25 so the unobfuscated 26+ anchors are included in the build.
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: 25
+          distribution: temurin
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build all versions
+        run: ./gradlew assemble --stacktrace
+
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: versions/*/build/libs/*.jar
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+
+      - name: Publish to Modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        run: ./gradlew publishMods --stacktrace
