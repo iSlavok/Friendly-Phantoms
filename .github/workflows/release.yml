@@ -32,12 +32,18 @@ jobs:
       - name: Build all versions
         run: ./gradlew assemble --stacktrace
 
+      # softprops/action-gh-release has no exclude patterns, so stage only the
+      # loadable mod jars (drop *-sources.jar) and upload from there.
+      - name: Collect release jars
+        run: |
+          mkdir -p release-jars
+          find versions -path '*/build/libs/*.jar' ! -name '*-sources.jar' -exec cp {} release-jars/ \;
+          ls -la release-jars
+
       - name: GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            versions/*/build/libs/*.jar
-            !versions/*/build/libs/*-sources.jar
+          files: release-jars/*.jar
           fail_on_unmatched_files: true
           generate_release_notes: true
 
