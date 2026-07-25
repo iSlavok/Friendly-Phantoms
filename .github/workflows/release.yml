@@ -35,7 +35,9 @@ jobs:
       - name: GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: versions/*/build/libs/*.jar
+          files: |
+            versions/*/build/libs/*.jar
+            !versions/*/build/libs/*-sources.jar
           fail_on_unmatched_files: true
           generate_release_notes: true
 
