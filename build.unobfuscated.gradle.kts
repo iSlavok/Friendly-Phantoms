@@ -31,6 +31,18 @@ dependencies {
     implementation("com.terraformersmc:modmenu:$modmenuVersion")
 }
 
+// Server gametest (behavioural phantom check, Mojang names).
+fabricApi {
+    configureTests {
+        createSourceSet = true
+        modId = "${property("archives_base_name")}-test"
+        eula = true
+    }
+}
+dependencies {
+    "gametestImplementation"("net.fabricmc.fabric-api:fabric-api:0.155.2+26.2")
+}
+
 tasks.processResources {
     val props = mapOf(
         "version" to project.version,
