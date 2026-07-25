@@ -57,12 +57,12 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build and gametest 26.2
-        run: ./gradlew :26.2:build :26.2:runGameTest --stacktrace
+      - name: Build and gametest 26.x
+        run: ./gradlew :26.1.2:build :26.1.2:runGameTest :26.2:build :26.2:runGameTest --stacktrace
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: jars-unobfuscated
-          path: versions/26.2/build/libs/*.jar
+          path: versions/26.*/build/libs/*.jar
           if-no-files-found: error
