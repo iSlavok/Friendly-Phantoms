@@ -1,7 +1,15 @@
 # Builds every Stonecutter version on each push/PR. A single `./gradlew build`
 # chisels, builds and gametests all declared Minecraft versions.
 name: build
-on: [pull_request, push]
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same branch/PR.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   # Yarn-mapped versions (1.18.2 – 1.21.8) build and gametest on JDK 21.
