@@ -26,6 +26,7 @@ stonecutter {
         // Minecraft 26+ is unobfuscated: different Loom plugin + no mappings, so it
         // uses a dedicated build script. It needs JDK 25, so only register it there.
         if (JavaVersion.current().majorVersion.toInt() >= 25) {
+            version("26.1.2", "26.1.2").buildscript = "build.unobfuscated.gradle.kts"
             version("26.2", "26.2").buildscript = "build.unobfuscated.gradle.kts"
         }
         vcsVersion = "1.21.8"
