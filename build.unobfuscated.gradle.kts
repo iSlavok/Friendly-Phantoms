@@ -70,6 +70,11 @@ tasks.processResources {
     }
 }
 
+// NeoForge entrypoint lives in the shared tree but must not compile here (Fabric).
+tasks.named<JavaCompile>("compileJava") {
+    exclude("online/slavok/neoforge/**")
+}
+
 tasks.withType<JavaCompile>().configureEach {
     options.release = javaVersion
 }
