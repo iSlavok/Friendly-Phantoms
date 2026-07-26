@@ -53,11 +53,12 @@ tasks.jar {
     }
 }
 
-// `./gradlew -p plugin runServer` (or the IDE task) launches a Paper server with
-// this plugin loaded. Override the Minecraft version with -Prun_mc=1.20.6, e.g.
-// The plugin jar (compiled against the Bukkit API) runs on any 1.13+ server.
 tasks.runServer {
-    minecraftVersion(providers.gradleProperty("run_mc").getOrElse("1.21.8"))
+    val mc = providers.gradleProperty("run_mc").getOrElse("1.21.8")
+    minecraftVersion(mc)
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(if (mc.substringBefore(".").toInt() >= 26) 25 else 21))
+    })
 }
 
 publishMods {
