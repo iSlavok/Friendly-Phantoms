@@ -1,0 +1,25 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/iSlavok/Friendly-Phantoms/issues"
+
+[[mods]]
+modId = "friendly-phantoms"
+version = "${version}"
+displayName = "Friendly Phantoms"
+authors = "isSLAVOK"
+description = '''This mod makes phantoms friendly!'''
+
+[[dependencies.friendly-phantoms]]
+modId = "neoforge"
+type = "required"
+versionRange = "[0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.friendly-phantoms]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft_dep}"
+ordering = "NONE"
+side = "BOTH"
