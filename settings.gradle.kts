@@ -40,3 +40,9 @@ stonecutter {
 }
 
 rootProject.name = "friendly-phantoms"
+
+// The server plugin is a separate Gradle build (its own settings), kept out of
+// the Stonecutter version grid. Include it as a composite build so the IDE lists
+// its tasks (e.g. runServer) alongside the mod. It is NOT wired into the root
+// `build`; CI still builds it in isolation via `./gradlew -p plugin`.
+includeBuild("plugin")
