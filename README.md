@@ -19,25 +19,29 @@ ModMenu is optional (Fabric only).
 
 ## Running locally
 
-Every artifact has an IDE-runnable Gradle task.
+**Mods — client & server (top-right Run dropdown).** Fabric Loom / ModDevGradle
+auto-generate IntelliJ run configurations for the **active** version — look in the
+Run/Debug dropdown (top-right) for **Minecraft Client** / **Minecraft Server**
+(or **NeoForge Client/Server** when a NeoForge node is active). Switch which
+version is active with the Stonecutter version switcher (IntelliJ Stonecutter
+panel, or `./gradlew "Set active project to <version>"`) and reload Gradle; the
+configs follow the active version.
 
-**Mods — client & server.** Pick the version with the Stonecutter version switcher
-(IntelliJ Stonecutter panel, or `./gradlew "Set active project to <version>"`),
-then run — both are under the **friendly phantoms** task group:
+Equivalent Gradle tasks (Gradle tool window → *friendly-phantoms → Tasks*):
 
-- `runActiveClient` — the active version's client
-- `runActiveServer` — the active version's dedicated server
+- `runActiveClient` / `runActiveServer` (group **friendly phantoms**) — the active
+  version's client/server, Fabric *or* NeoForge.
+- A specific version without switching: its node task, e.g. `:1.21.8:runClient`,
+  `:1.20.6-neoforge:runServer`, `:26.2:runClient`.
+- NeoForge `:<node>:runGameTestServer` — headless smoke that loads the mod and exits.
 
-They delegate to the active node, Fabric *or* NeoForge. To run a specific version
-without switching the active one, use its node task directly, e.g.
-`:1.21.8:runClient`, `:1.20.6-neoforge:runServer`, `:26.2:runClient`.
-NeoForge also has `:<node>:runGameTestServer` — a headless smoke that loads the
-mod on a server and exits.
-
-**Plugin — server.** `./gradlew -p plugin runServer` downloads a Paper server and
-runs it with the plugin loaded (EULA auto-accepted for the dev run). Change the
-Minecraft version with `-Prun_mc=1.20.6`; the same jar also runs on
-Spigot/Purpur/Folia. Plugins are server-side only — no client.
+**Plugin — server (Gradle tool window).** The plugin is an included build, so it
+appears in the Gradle tool window as **friendly-phantoms-plugin** → *Tasks → run
+paper → runServer* (double-click to run). It downloads a Paper server and runs it
+with the plugin loaded (EULA auto-accepted for the dev run). From a terminal:
+`./gradlew -p plugin runServer`. Change the Minecraft version with
+`-Prun_mc=1.20.6`; the same jar also runs on Spigot/Purpur/Folia. Plugins are
+server-side only — no client.
 
 **Seeing the effect in-game** (any client/server):
 
