@@ -6,6 +6,9 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import online.slavok.PhantomBehavior;
 
 /**
@@ -15,11 +18,14 @@ import online.slavok.PhantomBehavior;
  * untouched. This is only compiled on NeoForge nodes (see the source-set excludes
  * in build.neoforge.gradle.kts) and uses Mojang mappings.
  */
-@Mod("friendly-phantoms")
+@Mod("friendly_phantoms")
 public class FriendlyPhantomsNeoForge {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger("friendly_phantoms");
 
     public FriendlyPhantomsNeoForge() {
         NeoForge.EVENT_BUS.register(this);
+        LOGGER.info("Friendly Phantoms loaded — phantoms will no longer attack.");
     }
 
     @SubscribeEvent

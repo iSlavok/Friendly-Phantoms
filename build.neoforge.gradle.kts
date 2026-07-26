@@ -48,7 +48,7 @@ neoForge {
     // source set forms the mod; the modId must match neoforge.mods.toml.
     version = nf.neoforge
     mods {
-        register("friendly-phantoms") {
+        register("friendly_phantoms") {
             sourceSet(sourceSets.getByName("main"))
         }
     }

@@ -4,20 +4,21 @@ license = "MIT"
 issueTrackerURL = "https://github.com/iSlavok/Friendly-Phantoms/issues"
 
 [[mods]]
-modId = "friendly-phantoms"
+# NeoForge modIds may not contain '-' (unlike Fabric). Use an underscore.
+modId = "friendly_phantoms"
 version = "${version}"
 displayName = "Friendly Phantoms"
 authors = "isSLAVOK"
 description = '''This mod makes phantoms friendly!'''
 
-[[dependencies.friendly-phantoms]]
+[[dependencies.friendly_phantoms]]
 modId = "neoforge"
 type = "required"
 versionRange = "[0,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.friendly-phantoms]]
+[[dependencies.friendly_phantoms]]
 modId = "minecraft"
 type = "required"
 versionRange = "${minecraft_dep}"
