@@ -1,6 +1,9 @@
 plugins {
     id("dev.kikugie.stonecutter")
-    id("fabric-loom") version "1.17.17"
+    // Architectury Loom is a superset fork of Fabric Loom that can also build
+    // NeoForge/Forge from the same source tree. On Fabric nodes it behaves like
+    // Fabric Loom; `loom.platform` (set in gradle.properties) selects the target.
+    id("dev.architectury.loom") version "1.17.491"
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
 }
 
