@@ -117,8 +117,11 @@ publishMods {
     version.set(project.version.toString())
     changelog.set("See the GitHub release notes: https://github.com/iSlavok/Friendly-Phantoms/releases")
     type.set(me.modmuss50.mpp.ReleaseType.STABLE)
+    // The Fabric jar also runs on Quilt as-is (no dedicated Quilt build needed),
+    // so tag it for both loaders on Modrinth.
     modLoaders.add("fabric")
-    displayName.set("Friendly Phantoms ${property("mod_version")} (MC $mcVersion)")
+    modLoaders.add("quilt")
+    displayName.set("Friendly Phantoms ${property("mod_version")} (Fabric/Quilt, MC $mcVersion)")
 
     modrinth {
         projectId.set(providers.gradleProperty("modrinth_id"))

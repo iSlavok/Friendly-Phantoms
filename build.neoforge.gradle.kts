@@ -95,7 +95,9 @@ tasks.jar {
 
 publishMods {
     file.set(tasks.named<AbstractArchiveTask>("remapJar").flatMap { it.archiveFile })
-    version.set(project.version.toString())
+    // Distinct from the Fabric version of the same Minecraft version so the two
+    // do not collide as Modrinth version numbers on the shared project.
+    version.set("${property("mod_version")}+neoforge.mc$mcVersion")
     changelog.set("See the GitHub release notes: https://github.com/iSlavok/Friendly-Phantoms/releases")
     type.set(me.modmuss50.mpp.ReleaseType.STABLE)
     modLoaders.add("neoforge")
