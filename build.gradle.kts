@@ -51,8 +51,12 @@ dependencies {
     mappings("net.fabricmc:yarn:${mc.yarn}:v2")
     modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
 
-    // ModMenu is an optional, client-only soft dependency (see fabric.mod.json "suggests").
-    modImplementation("com.terraformersmc:modmenu:${mc.modmenu}")
+    // ModMenu is an optional, client-only soft dependency (see fabric.mod.json
+    // "suggests"). Compile-only: we implement ModMenuApi but must NOT pull ModMenu
+    // into the dev runtime — it transitively needs Fabric API, which this mod does
+    // not, and its absence would crash `runClient`. Users install ModMenu (+Fabric
+    // API) themselves in production.
+    modCompileOnly("com.terraformersmc:modmenu:${mc.modmenu}")
 }
 
 // Server gametest (Minecraft 1.20+). Directly verifies the mixin: a spawned phantom

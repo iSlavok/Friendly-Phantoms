@@ -41,7 +41,9 @@ repositories {
 dependencies {
     minecraft("com.mojang:minecraft:$mcVersion")
     implementation("net.fabricmc:fabric-loader:${property("loader_version")}")
-    implementation("com.terraformersmc:modmenu:${u.modmenu}")
+    // Compile-only: ModMenu is an optional soft dependency; keep it out of the dev
+    // runtime so runClient doesn't require ModMenu's Fabric API modules.
+    compileOnly("com.terraformersmc:modmenu:${u.modmenu}")
 }
 
 // Server gametest (smoke check that the required mixin applies to the goal class).
