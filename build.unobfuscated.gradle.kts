@@ -57,6 +57,8 @@ dependencies {
 }
 
 tasks.processResources {
+    // NeoForge-only metadata; the unobfuscated build is Fabric.
+    exclude("META-INF/neoforge.mods.toml", "pack.mcmeta")
     val props = mapOf(
         "version" to project.version,
         "java_level" to javaVersion,

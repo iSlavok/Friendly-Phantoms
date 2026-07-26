@@ -73,7 +73,15 @@ mc.fapi?.let { fapiVersion ->
     }
 }
 
+// The NeoForge entrypoint and its metadata live in the shared tree but must not
+// compile/ship on Fabric (Mojmap-only code, wrong mappings here).
+tasks.named<JavaCompile>("compileJava") {
+    exclude("online/slavok/neoforge/**")
+}
+
 tasks.processResources {
+    // NeoForge-only metadata; Fabric uses fabric.mod.json.
+    exclude("META-INF/neoforge.mods.toml", "pack.mcmeta")
     val props = mapOf(
         "version" to project.version,
         "java_level" to mc.java,

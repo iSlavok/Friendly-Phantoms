@@ -1,0 +1,6 @@
+{
+  "pack": {
+    "description": "Friendly Phantoms",
+    "pack_format": ${pack_format}
+  }
+}
