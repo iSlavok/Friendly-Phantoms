@@ -1,12 +1,16 @@
-// Build script for NeoForge nodes (Mojang-mapped). The shared mod source is
-// reused via source-set excludes: only PhantomBehavior (no Minecraft references)
-// and the online.slavok.neoforge package compile here. The Fabric mixin, the
-// Fabric entrypoint and the ModMenu screen are excluded — NeoForge implements the
-// behaviour with a LivingChangeTargetEvent listener instead of a mixin.
+// Build script for NeoForge nodes. Uses ModDevGradle (net.neoforged.moddev),
+// NOT loom, so it coexists with the fabric-loom Fabric/unobfuscated nodes in one
+// Stonecutter build (Architectury Loom cannot: it clashes with fabric-loom and
+// does not support the unobfuscated 26.x nodes). NeoForge mods are Mojang-mapped
+// in production, so the plain `jar` is the final loadable mod jar — no reobf.
+//
+// The shared mod source is reused via source-set excludes: only PhantomBehavior
+// (no Minecraft references) and online.slavok.neoforge compile here; the Fabric
+// mixin/entrypoint/ModMenu are excluded. Behaviour is a LivingChangeTargetEvent
+// listener instead of a mixin.
 plugins {
     id("dev.kikugie.stonecutter")
-    id("dev.architectury.loom") version "1.17.491"
-    id("architectury-plugin") version "3.5.169"
+    id("net.neoforged.moddev") version "2.0.141"
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
 }
 
@@ -39,23 +43,35 @@ base {
     archivesName = "${property("archives_base_name")}-neoforge"
 }
 
-architectury {
-    platformSetupLoomIde()
-    neoForge()
+neoForge {
+    // Pulls Minecraft + NeoForge (Mojang-mapped). `mods` tells ModDevGradle which
+    // source set forms the mod; the modId must match neoforge.mods.toml.
+    version = nf.neoforge
+    mods {
+        register("friendly-phantoms") {
+            sourceSet(sourceSets.getByName("main"))
+        }
+    }
+    runs {
+        register("client") {
+            client()
+            gameDirectory = file("run")
+        }
+        register("server") {
+            server()
+            gameDirectory = file("run")
+        }
+        // Headless load smoke: starts a server, loads the mod, runs any game tests
+        // (none yet), exits. A broken @Mod / neoforge.mods.toml fails this.
+        // Task: runGameTestServer.
+        register("gameTestServer") {
+            type = "gameTestServer"
+            gameDirectory = file("run")
+        }
+    }
 }
 
-repositories {
-    maven("https://maven.neoforged.net/releases/") { name = "NeoForged" }
-}
-
-dependencies {
-    minecraft("com.mojang:minecraft:$mcVersion")
-    mappings(loom.officialMojangMappings())
-    "neoForge"("net.neoforged:neoforge:${nf.neoforge}")
-}
-
-// Compile only the shared, Minecraft-agnostic code plus the NeoForge entrypoint.
-// Everything Fabric-specific is dropped so it never has to resolve against Mojmaps.
+// Exclude Fabric-only sources — they reference Yarn names / Fabric APIs absent here.
 tasks.named<JavaCompile>("compileJava") {
     exclude("online/slavok/FriendlyPhantoms.java")
     exclude("online/slavok/mixin/**")
@@ -76,15 +92,20 @@ tasks.processResources {
     }
 }
 
+// Stonecutter's comment-processing must run before ModDevGradle resolves sources.
+tasks.named("createMinecraftArtifacts") {
+    dependsOn(tasks.named("stonecutterGenerate"))
+}
+
 tasks.withType<JavaCompile>().configureEach {
     options.release = nf.java
 }
 
 java {
-    withSourcesJar()
     val jv = JavaVersion.toVersion(nf.java)
     sourceCompatibility = jv
     targetCompatibility = jv
+    toolchain.languageVersion = JavaLanguageVersion.of(nf.java)
 }
 
 tasks.jar {
@@ -94,7 +115,8 @@ tasks.jar {
 }
 
 publishMods {
-    file.set(tasks.named<AbstractArchiveTask>("remapJar").flatMap { it.archiveFile })
+    // NeoForge is Mojang-mapped in production: the plain `jar` is the final jar.
+    file.set(tasks.named<Jar>("jar").flatMap { it.archiveFile })
     // Distinct from the Fabric version of the same Minecraft version so the two
     // do not collide as Modrinth version numbers on the shared project.
     version.set("${property("mod_version")}+neoforge.mc$mcVersion")
