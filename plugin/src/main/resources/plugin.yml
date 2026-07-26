@@ -1,0 +1,12 @@
+name: FriendlyPhantoms
+version: '${version}'
+main: online.slavok.plugin.FriendlyPhantomsPlugin
+description: Phantoms will no longer attack players, but stay farmable.
+author: isSLAVOK
+website: https://github.com/iSlavok/Friendly-Phantoms
+# Phantoms exist since MC 1.13; the listener uses only stable core Bukkit API.
+api-version: '1.13'
+# Required for Folia to load the plugin. Harmless on Spigot/Paper/Purpur. The
+# single EntityTargetEvent listener is region-local (no scheduler, no
+# cross-region access), so it is genuinely Folia-safe.
+folia-supported: true
