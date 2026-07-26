@@ -50,9 +50,6 @@ tasks.jar {
     }
 }
 
-// Publishing to Modrinth (same project as the mod jars). One jar, tagged for the
-// whole Bukkit fork chain. Requires gradle property `modrinth_id` and env
-// MODRINTH_TOKEN. modLoaders is free-form on mod-publish-plugin 2.x.
 publishMods {
     file.set(tasks.named<Jar>("jar").flatMap { it.archiveFile })
     version.set(project.version.toString())
@@ -64,12 +61,9 @@ publishMods {
     modrinth {
         projectId.set(providers.gradleProperty("modrinth_id"))
         accessToken.set(providers.environmentVariable("MODRINTH_TOKEN"))
-        // Phantoms exist since 1.13; the stable Bukkit API makes one jar cover a
-        // wide range. Tag the commonly-used versions across that range.
-        minecraftVersions.addAll(
-            "1.16.5", "1.17.1", "1.18.2", "1.19.4",
-            "1.20.1", "1.20.4", "1.20.6",
-            "1.21", "1.21.1", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8",
-        )
+        minecraftVersionRange {
+            start = "1.13"
+            end = "26.2"
+        }
     }
 }
