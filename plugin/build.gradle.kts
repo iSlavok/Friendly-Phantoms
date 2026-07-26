@@ -3,6 +3,9 @@ plugins {
     // 2.x: its Modrinth modLoaders is free-form, so it can publish the plugin
     // loaders (bukkit/spigot/paper/purpur/folia) that older versions reject.
     id("me.modmuss50.mod-publish-plugin") version "2.1.1"
+    // Adds `runServer`: downloads a Paper server and runs it with this plugin
+    // loaded (EULA auto-accepted for the dev run). A one-click server for testing.
+    id("xyz.jpenilla.run-paper") version "3.0.2"
 }
 
 java {
@@ -48,6 +51,13 @@ tasks.jar {
     from(rootDir.resolve("../LICENSE")) {
         rename { "${it}_friendly-phantoms-plugin" }
     }
+}
+
+// `./gradlew -p plugin runServer` (or the IDE task) launches a Paper server with
+// this plugin loaded. Override the Minecraft version with -Prun_mc=1.20.6, e.g.
+// The plugin jar (compiled against the Bukkit API) runs on any 1.13+ server.
+tasks.runServer {
+    minecraftVersion(providers.gradleProperty("run_mc").getOrElse("1.21.8"))
 }
 
 publishMods {
